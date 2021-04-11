@@ -1,0 +1,100 @@
+﻿@using Model.EF;
+@model FileMain
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<link href="~/Content/element.css" rel="stylesheet" />
+<script src="//unpkg.com/vue/dist/vue.js"></script>
+<script src="//unpkg.com/element-ui@2.15.1/lib/index.js"></script>
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="title">
+                            <h4>Công ty @Model.file_company</h4>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Thông tư @Model.file_circular</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@(Model.file_form == 1 ? "Trực tiếp" : "Gián tiếp")</li>
+                            </ol>
+                        </nav>
+                        <b>Ngày: </b> @Model.file_startday.Value.ToString("dd/MM/yyyy") - @Model.file_endday.Value.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="col-lg-12 mt-3" id="app">
+                        <template class="text-dark">
+                            <el-tabs v-model="activeName" v:on-click="handleClick">
+                                <el-tab-pane label="Báo cáo cân đối kế toán" name="first">
+                                    <template>
+                                        <el-table :data="tableData"
+                                                  height="750"
+                                                  style="width: 100%">
+                                            <el-table-column prop="target"
+                                                             label="Chỉ tiêu">
+                                            </el-table-column>
+                                            <el-table-column prop="code"
+                                                             label="Mã số">
+                                                <template slot-scope="scope">
+                                                    <b :class="scope.row.code == 'NaN' ? 'text-danger' : ''">{{scope.row.code}}</b>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="V1"
+                                                             label="Số cuối năm (V1)">
+                                                <template slot-scope="scope">
+                                                    <input v-model="scope.row.V1" :class="scope.row.color > 90 ? '' : scope.row.color > 65 ? 'bg-success' : 'bg-danger'" style="border: none" />
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="V0"
+                                                             label="Số cuối năm đọc(V0)">
+                                            </el-table-column>
+                                            <el-table-column prop="img"
+                                                             label="Ảnh"
+                                                             width="100">
+                                                <template slot-scope="scope">
+                                                    <el-image :src="scope.row.img" :preview-src-list="[scope.row.img]" style="width: 100%; height: 20px">
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </template>
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <div class=" fixed-bottom">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-9 card">
+                                                    <div style="padding: 10px">
+                                                        <b>TỔNG CỘNG TÀI SẢN (270 = 100+200)</b>
+                                                        <b class="float-right">{{format2(sumsum,'VNĐ')}}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </el-tab-pane>
+                                <el-tab-pane label="Báo cáo kết quả hoạt động kinh doanh" name="second">Config</el-tab-pane>
+                                <el-tab-pane label="Báo cáo lưu chuyển tiền tệ" name="role">Role</el-tab-pane>
+                            </el-tabs>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    var idfile = "@Model.file_id";
+</script>
+
+<script src="~/Scripts/arrCT.js"></script>
+<script src="~/Scripts/details.js"></script>
