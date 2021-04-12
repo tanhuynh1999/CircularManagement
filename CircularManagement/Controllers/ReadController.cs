@@ -164,5 +164,9 @@ namespace CircularManagement.Controllers
                        };
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult File()
+        {
+            return View();
+        }
     }
 }

@@ -684,6 +684,7 @@
     <Content Include="Content\Layout\vendors\styles\icon-font.min.css" />
     <Content Include="Content\Layout\vendors\styles\style.css" />
     <Content Include="Content\Layout\vendors\styles\style.min.css" />
+    <Content Include="Content\show.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1260,6 +1261,7 @@
     <Content Include="Views\View\Menu.cshtml" />
     <Content Include="Views\Read\Details.cshtml" />
     <Content Include="Views\Read\Loading.cshtml" />
+    <Content Include="Views\Read\File.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

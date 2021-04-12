@@ -6,6 +6,7 @@
 }
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+<link href="~/Content/show.css" rel="stylesheet" />
 <link href="~/Content/element.css" rel="stylesheet" />
 <script src="//unpkg.com/vue/dist/vue.js"></script>
 <script src="//unpkg.com/element-ui@2.15.1/lib/index.js"></script>
@@ -46,19 +47,20 @@
                                             <el-table-column prop="V1"
                                                              label="Số cuối năm (V1)">
                                                 <template slot-scope="scope">
-                                                    <input v-model="scope.row.V1" :class="scope.row.color > 90 ? '' : scope.row.color > 65 ? 'bg-success' : 'bg-danger'" style="border: none" />
+                                                    <span class="qs"><input v-model="scope.row.V1" :class="scope.row.color > 90 ? '' : scope.row.color > 65 ? 'bg-success' : 'bg-danger'" style="border: none" /><span class="popover above"><el-image :src="scope.row.img" :preview-src-list="[scope.row.img]" style="width: 100%; height: 20px"></span></span>
+                                                    
                                                 </template>
                                             </el-table-column>
                                             <el-table-column prop="V0"
                                                              label="Số cuối năm đọc(V0)">
                                             </el-table-column>
-                                            <el-table-column prop="img"
+                                            @*<el-table-column prop="img"
                                                              label="Ảnh"
                                                              width="100">
                                                 <template slot-scope="scope">
                                                     <el-image :src="scope.row.img" :preview-src-list="[scope.row.img]" style="width: 100%; height: 20px">
                                                 </template>
-                                            </el-table-column>
+                                            </el-table-column>*@
                                         </el-table>
                                     </template>
                                     <br />
