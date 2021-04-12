@@ -187,5 +187,10 @@ namespace CircularManagement.Controllers
             }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult Detail(int? id)
+        {
+            Session["key"] = null;
+            return View(db.FileMains.Find(id));
+        }
     }
 }

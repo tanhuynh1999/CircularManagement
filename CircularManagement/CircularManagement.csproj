@@ -685,6 +685,7 @@
     <Content Include="Content\Layout\vendors\styles\style.css" />
     <Content Include="Content\Layout\vendors\styles\style.min.css" />
     <Content Include="Content\show.css" />
+    <Content Include="Content\show2.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1222,6 +1223,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\test.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Web.config" />
@@ -1262,6 +1264,7 @@
     <Content Include="Views\Read\Details.cshtml" />
     <Content Include="Views\Read\Loading.cshtml" />
     <Content Include="Views\Read\File.cshtml" />
+    <Content Include="Views\Read\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
