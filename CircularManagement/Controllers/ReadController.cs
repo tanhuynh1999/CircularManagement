@@ -168,5 +168,24 @@ namespace CircularManagement.Controllers
         {
             return View();
         }
+        public JsonResult jsonFile()
+        {
+            var list = db.FileMains.OrderByDescending(n => n.file_datecreate).Select(n => new
+            {
+
+                id = n.file_id,
+                cir = n.file_circular,
+                form = n.file_form == 1 ? "Gián tiếp" : "Trực tiếp",
+                starsday = n.file_startday.ToString(),
+                endday = n.file_endday.ToString(),
+                datecreate = n.file_datecreate.ToString(),
+                status = n.file_status,
+                key = n.file_key,
+                img = n.file_img,
+                company = n.file_company
+
+            }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
     }
 }
