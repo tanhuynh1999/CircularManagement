@@ -3,6 +3,7 @@
     ViewBag.Title = "File";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">
         <div class="min-height-200px">
@@ -48,8 +49,75 @@
                 </div>
             </div>
 
+            <div id="app">
+                <template>
+                    <el-table :data="tableData.filter(data => !search || data.company.toLowerCase().includes(search.toLowerCase()))"
+                              style="width: 100%">
+                        <el-table-column label="Mã"
+                                         prop="id">
+                        </el-table-column>
+                        <el-table-column label="Company"
+                                         prop="company">
+                        </el-table-column>
+                        <el-table-column label="Form"
+                                         prop="form">
+                        </el-table-column>
+                        <el-table-column label="starsday"
+                                         prop="starsday">
+                        </el-table-column>
+                        <el-table-column label="endday"
+                                         prop="endday">
+                        </el-table-column>
+                        <el-table-column align="right">
+                            <template slot="header" slot-scope="scope">
+                                <el-input v-model="search"
+                                          size="mini"
+                                          placeholder="Type to search" />
+                            </template>
+                            <template slot-scope="scope">
+                                <el-button size="mini"
+                                           v-on:click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                                <el-button size="mini"
+                                           type="danger"
+                                           v-on:click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+            </div>
+
         </div>
     </div>
 </div>
+<script>
+    var Main = {
+        data() {
+            return {
+                tableData: [],
+                search: '',
+            }
+        },
+        methods: {
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            }
+        },
+        mounted: function () {
+            axios.get('/Read/jsonFile')
+                .then(response => {
+                    this.tableData = response.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+
+        }
+    }
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+</script>
 
 
