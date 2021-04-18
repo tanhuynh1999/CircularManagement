@@ -15,6 +15,7 @@
     font-family: 'Helvetica', sans-serif;
     font-size: 18px;
     font-weight: bold;
+    height: 100%;
     text-align: center;
 }
 
@@ -31,7 +32,7 @@
         top: -2px;
         padding: 7px 10px;
         position: absolute;
-        width: 200px;
+        width: 100%;
         z-index: 1000;
     }
 

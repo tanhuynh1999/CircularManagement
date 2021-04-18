@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DATAOCRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="FileMains">
+        <EntityType Name="FileMain">
           <Key>
             <PropertyRef Name="file_id" />
           </Key>
@@ -20,14 +20,14 @@
           <Property Name="file_img" Type="nvarchar(max)" />
           <Property Name="file_company" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="ItemMains">
+        <EntityType Name="ItemMain">
           <Key>
             <PropertyRef Name="item_id" />
           </Key>
           <Property Name="item_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="item_name" Type="nvarchar" MaxLength="1000" />
-          <Property Name="item_vo" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="item_vi" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="item_vo" Type="money" />
+          <Property Name="item_vi" Type="money" />
           <Property Name="file_id" Type="int" />
           <Property Name="item_img" Type="nvarchar(max)" />
           <Property Name="item_code" Type="int" />
@@ -56,7 +56,7 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <EntityType Name="TableMains">
+        <EntityType Name="TableMain">
           <Key>
             <PropertyRef Name="table_id" />
           </Key>
@@ -64,41 +64,41 @@
           <Property Name="table_name" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_ItemMain_FileMain">
-          <End Role="FileMains" Type="Self.FileMains" Multiplicity="0..1" />
-          <End Role="ItemMains" Type="Self.ItemMains" Multiplicity="*" />
+          <End Role="FileMain" Type="Self.FileMain" Multiplicity="0..1" />
+          <End Role="ItemMain" Type="Self.ItemMain" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FileMains">
+            <Principal Role="FileMain">
               <PropertyRef Name="file_id" />
             </Principal>
-            <Dependent Role="ItemMains">
+            <Dependent Role="ItemMain">
               <PropertyRef Name="file_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemMain_TableMain">
-          <End Role="TableMains" Type="Self.TableMains" Multiplicity="0..1" />
-          <End Role="ItemMains" Type="Self.ItemMains" Multiplicity="*" />
+          <End Role="TableMain" Type="Self.TableMain" Multiplicity="0..1" />
+          <End Role="ItemMain" Type="Self.ItemMain" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="TableMains">
+            <Principal Role="TableMain">
               <PropertyRef Name="table_id" />
             </Principal>
-            <Dependent Role="ItemMains">
+            <Dependent Role="ItemMain">
               <PropertyRef Name="table_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DATAOCRModelStoreContainer">
-          <EntitySet Name="FileMains" EntityType="Self.FileMains" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ItemMains" EntityType="Self.ItemMains" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileMain" EntityType="Self.FileMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemMain" EntityType="Self.ItemMain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TableMains" EntityType="Self.TableMains" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableMain" EntityType="Self.TableMain" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ItemMain_FileMain" Association="Self.FK_ItemMain_FileMain">
-            <End Role="FileMains" EntitySet="FileMains" />
-            <End Role="ItemMains" EntitySet="ItemMains" />
+            <End Role="FileMain" EntitySet="FileMain" />
+            <End Role="ItemMain" EntitySet="ItemMain" />
           </AssociationSet>
           <AssociationSet Name="FK_ItemMain_TableMain" Association="Self.FK_ItemMain_TableMain">
-            <End Role="TableMains" EntitySet="TableMains" />
-            <End Role="ItemMains" EntitySet="ItemMains" />
+            <End Role="TableMain" EntitySet="TableMain" />
+            <End Role="ItemMain" EntitySet="ItemMain" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -213,7 +213,7 @@
         <EntityContainerMapping StorageEntityContainer="DATAOCRModelStoreContainer" CdmEntityContainer="DATAOCREntities">
           <EntitySetMapping Name="FileMains">
             <EntityTypeMapping TypeName="DATAOCRModel.FileMain">
-              <MappingFragment StoreEntitySet="FileMains">
+              <MappingFragment StoreEntitySet="FileMain">
                 <ScalarProperty Name="file_company" ColumnName="file_company" />
                 <ScalarProperty Name="file_img" ColumnName="file_img" />
                 <ScalarProperty Name="file_key" ColumnName="file_key" />
@@ -229,7 +229,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="ItemMains">
             <EntityTypeMapping TypeName="DATAOCRModel.ItemMain">
-              <MappingFragment StoreEntitySet="ItemMains">
+              <MappingFragment StoreEntitySet="ItemMain">
                 <ScalarProperty Name="item_codeitem" ColumnName="item_codeitem" />
                 <ScalarProperty Name="item_target" ColumnName="item_target" />
                 <ScalarProperty Name="item_y1" ColumnName="item_y1" />
@@ -267,7 +267,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="TableMains">
             <EntityTypeMapping TypeName="DATAOCRModel.TableMain">
-              <MappingFragment StoreEntitySet="TableMains">
+              <MappingFragment StoreEntitySet="TableMain">
                 <ScalarProperty Name="table_name" ColumnName="table_name" />
                 <ScalarProperty Name="table_id" ColumnName="table_id" />
               </MappingFragment>
