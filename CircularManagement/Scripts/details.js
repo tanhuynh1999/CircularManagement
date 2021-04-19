@@ -103,7 +103,6 @@
                         }
                     }
                 }
-
                 //Bảng cân đối kế toán
                 // reload view
                 for (var i = 0; i < this.tableData.length; i++) {
