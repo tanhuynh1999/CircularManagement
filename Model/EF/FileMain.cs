@@ -18,6 +18,7 @@ namespace Model.EF
         public FileMain()
         {
             this.ItemMains = new HashSet<ItemMain>();
+            this.Historys = new HashSet<History>();
         }
     
         public int file_id { get; set; }
@@ -33,5 +34,7 @@ namespace Model.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemMain> ItemMains { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<History> Historys { get; set; }
     }
 }

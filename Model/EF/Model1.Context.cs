@@ -29,5 +29,8 @@ namespace Model.EF
         public virtual DbSet<ItemMain> ItemMains { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TableMain> TableMains { get; set; }
+        public virtual DbSet<History> Historys { get; set; }
+        public virtual DbSet<FileMain2> FileMain2 { get; set; }
+        public virtual DbSet<FileMains3> FileMains3 { get; set; }
     }
 }

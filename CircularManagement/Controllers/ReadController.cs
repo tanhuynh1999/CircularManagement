@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using Model.EF;
 using Model.DAO;
 using System.Drawing;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
 
 namespace CircularManagement.Controllers
 {
@@ -18,10 +21,22 @@ namespace CircularManagement.Controllers
         {
             return View();
         }
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
             Session["key"] = null;
-            return View(db.FileMains.Find(id));
+            FileMain file = db.FileMains.SingleOrDefault(n=>n.file_key == id);
+
+            History history = new History
+            {
+                file_id = file.file_id,
+                his_title = "đã xem",
+                his_datecreate = DateTime.Now,
+                his_status = 1
+            };
+            db.Historys.Add(history);
+            db.SaveChanges();
+
+            return View(file);
         }
         //Loading
         public ActionResult Loading()
@@ -63,6 +78,30 @@ namespace CircularManagement.Controllers
                 {
                     case 1:
                         Session["key"] = code;
+
+
+                        FileMain f = db.FileMains.SingleOrDefault(n => n.file_key == code);
+                        History history = new History
+                        {
+                            file_id = f.file_id,
+                            his_title = "đã tạo báo cáo",
+                            his_datecreate = DateTime.Now,
+                            his_status = 1
+                        };
+                        db.Historys.Add(history);
+                        db.SaveChanges();
+
+
+                        History history2 = new History
+                        {
+                            file_id = f.file_id,
+                            his_title = "đang tiến hành đọc",
+                            his_datecreate = DateTime.Now,
+                            his_status = 1
+                        };
+                        db.Historys.Add(history2);
+                        db.SaveChanges();
+
                         return RedirectToAction("Loading");
                     default:
                         return Redirect("/");
@@ -99,11 +138,26 @@ namespace CircularManagement.Controllers
                     item_mvi = price[i],
                     item_img = codekey + ".png",
                     item_target = (string)target[i],
-                    item_codeitem = itemcode[i]
+                    item_codeitem = itemcode[i],
+                    file_key = file.file_key
                 };
                 db.ItemMains.Add(itemMain);
+
             }
             db.SaveChanges();
+
+
+            History history2 = new History
+            {
+                file_id = file.file_id,
+                his_title = "đã đọc xong",
+                his_datecreate = DateTime.Now,
+                his_status = 1
+            };
+            db.Historys.Add(history2);
+            db.SaveChanges();
+
+
             return Json(null);
         }
         public bool SaveResizeImage(string img, string path, int xm0, int ym0, int xm1, int ym1)
@@ -142,10 +196,10 @@ namespace CircularManagement.Controllers
                 return false;
             }
         }
-        public JsonResult IndexDetails(int? id)
+        public JsonResult IndexDetails(string id)
         {
             var list = from item in db.ItemMains
-                       where item.file_id == id
+                       where item.file_key == id
                        select new
                        {
                            target = item.item_target,
@@ -187,14 +241,107 @@ namespace CircularManagement.Controllers
             }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Detail(int? id)
+        public ActionResult Detail(string id)
         {
             Session["key"] = null;
-            return View(db.FileMains.Find(id));
+            FileMain file = db.FileMains.SingleOrDefault(n=>n.file_key == id);
+
+            History history = new History
+            {
+                file_id = file.file_id,
+                his_title = "đã xem",
+                his_datecreate = DateTime.Now,
+                his_status = 1
+            };
+            db.Historys.Add(history);
+            db.SaveChanges();
+
+            return View(file);
         }
         public ActionResult History()
         {
             return View();
+        }
+        public JsonResult GetAll()
+        {
+
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DATAOCR"].ConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(@"SELECT [his_id]
+      ,[file_id]
+      ,[his_title]
+      ,[his_datecreate]
+      ,[his_status]
+  FROM [dbo].[Historys]", connection))
+                {
+                    // Make sure the command object does not already have
+                    // a notification object associated with it.
+                    command.Notification = null;
+
+                    SqlDependency dependency = new SqlDependency(command);
+                    dependency.OnChange += new OnChangeEventHandler(dependency_OnChange);
+
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    var list = db.Historys.OrderByDescending(n=>n.his_datecreate).Select(n => new{ 
+                        id = n.his_id,
+                        idfile = n.file_id,
+                        title = n.his_title,
+                        date = n.his_datecreate.ToString(),
+                        company = n.FileMain.file_company
+                    
+                    }).ToList();
+
+                    return Json(new { list = list }, JsonRequestBehavior.AllowGet);
+
+                }
+            }
+        }
+
+        private void dependency_OnChange(object sender, SqlNotificationEventArgs e)
+        {
+            Hubs.HistoryHub.Show();
+        }
+        public ActionResult Data()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult GetData()
+        {
+            List<FileMain> file = db.FileMains.ToList();
+            foreach (var item in file)
+            {
+                if (DateTime.Now >= item.file_datecreate.Value.AddMonths(1))
+                {
+                    FileMain2 fileMain2 = new FileMain2()
+                    {
+                        file_circular = item.file_circular,
+                        file_company = item.file_company,
+                        file_datecreate = item.file_datecreate,
+                        file_endday = item.file_endday,
+                        file_form = item.file_form,
+                        file_id = item.file_id,
+                        file_img = item.file_img,
+                        file_key = item.file_key,
+                        file_startday = item.file_startday,
+                        file_status = item.file_status,
+                        id = item.file_id
+                    };
+                    db.FileMain2.Add(fileMain2);
+
+                    var idid = db.FileMains.SingleOrDefault(n => n.file_key == item.file_key);
+                    idid.file_status = 2;
+                    db.SaveChanges();
+
+                    
+                }
+            }
+            return Redirect("/Read/Data");
         }
     }
 }

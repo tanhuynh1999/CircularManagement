@@ -11,8 +11,48 @@
     <link rel="apple-touch-icon" sizes="180x180" href="~/Content/Layout/vendors/images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Layout/vendors/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Layout/vendors/images/favicon-16x16.png">
-
     <!-- Mobile Specific Metas -->
+
+
+    <script src="~/Content/Layout/vendors/scripts/core.js"></script>
+    <script src="~/Content/Layout/vendors/scripts/script.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            // Proxy created on the fly
+            var cus = $.connection.historyHub;
+            // Declare a function on the job hub so the server can invoke it
+            cus.client.displayHistory = function () {
+                getData();
+            };
+            // Start the connection
+            $.connection.hub.start();
+            getData();
+        });
+        function getData() {
+            var $tbl = $('#his');
+            $.ajax({
+                url: '/Read/GetAll',
+                type: 'GET',
+                datatype: 'json',
+                success: function (data) {
+                    $tbl.empty();
+                    $.each(data.list, function (i, model) {
+                        $tbl.append
+                            (
+                                '<tr>' +
+                                ' <td>Công ty <b class="text-danger">' + model.idfile + '</b> ' + model.title + ' tài liệu <b class="text-success">' + model.company + '</b> vào lúc ' + model.date + '</td>' +
+                                '</tr>'
+                            );
+                    });
+                }
+            });
+        }
+    </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -39,8 +79,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="//unpkg.com/element-ui@2.15.1/lib/index.js"></script>
-
-
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
     @*<div class="pre-loader">
@@ -275,12 +314,11 @@
 
     <!-- js -->
 
-    <script src="~/Content/Layout/vendors/scripts/core.js"></script>
-    <script src="~/Content/Layout/vendors/scripts/script.min.js"></script>
-
 
     <script src="~/Content/Layout/vendors/scripts/process.js"></script>
     <script src="~/Content/Layout/vendors/scripts/layout-settings.js"></script>
+
+
     <script src="~/Scripts/test.js"></script>
     <script>
         Dropzone.autoDiscover = false;
@@ -293,5 +331,7 @@
             }
         });
     </script>
+
+
 </body>
 </html>
