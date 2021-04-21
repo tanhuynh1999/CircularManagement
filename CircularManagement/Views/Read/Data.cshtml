@@ -1,0 +1,97 @@
+﻿@using Model.EF;
+@{
+    DATAOCREntities db = new DATAOCREntities();
+    ViewBag.Title = "Tối ưu tốc độ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<FileMain> fileMains = db.FileMains.Where(n=>n.file_status == 1).OrderByDescending(n => n.file_datecreate).ToList();
+    List<FileMain2> fileMains2 = db.FileMain2.Where(n => n.file_status == 1).OrderByDescending(n => n.file_datecreate).ToList();
+    List<FileMains3> fileMains3 = db.FileMains3.OrderByDescending(n => n.file_datecreate).ToList();
+}
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="card rounded">
+                <div style="padding: 10px">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="@Url.Action("GetData","Read")" class="btn btn-danger"><i class="fa fa-database">&nbsp;</i>Tối ưu dữ liệu</a>
+                        </div>
+                        <div class="col-lg-12">
+                            <br />
+                        </div>
+
+                        <div class="col-lg-4">
+                            <h5 class="mt-2">Bảng Hiện tại</h5>
+                            <table class="table mt-3">
+                                <tr>
+                                    <td>Mã</td>
+                                    <td>Tên công ty</td>
+                                    <td>Thông tư</td>
+                                    <td>Hình thức</td>
+                                    <td>Ngày tạo</td>
+                                </tr>
+                                @foreach (var item in fileMains)
+                                {
+                                    <tr>
+                                        <td>@item.file_id</td>
+                                        <td>@item.file_company</td>
+                                        <td>@item.file_circular</td>
+                                        <td>@item.file_form</td>
+                                        <td>@item.file_datecreate</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="col-lg-4 bg-secondary text-white">
+                            <h5 class="mt-2 text-white">Bảng tháng tiếp theo</h5>
+                            <table class="table mt-3">
+                                <tr>
+                                    <td>Mã</td>
+                                    <td>Tên công ty</td>
+                                    <td>Thông tư</td>
+                                    <td>Hình thức</td>
+                                    <td>Ngày tạo</td>
+                                </tr>
+                                @foreach (var item in fileMains2)
+                                {
+                                    <tr>
+                                        <td>@item.file_id</td>
+                                        <td>@item.file_company</td>
+                                        <td>@item.file_circular</td>
+                                        <td>@item.file_form</td>
+                                        <td>@item.file_datecreate</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="col-lg-4 bg-info text-white">
+                            <h5 class="mt-2 text-white">Bảng 2 tháng tiếp theo</h5>
+                            <table class="table mt-3">
+                                <tr>
+                                    <td>Mã</td>
+                                    <td>Tên công ty</td>
+                                    <td>Thông tư</td>
+                                    <td>Hình thức</td>
+                                    <td>Ngày tạo</td>
+                                </tr>
+                                @foreach (var item in fileMains3)
+                                {
+                                    <tr>
+                                        <td>@item.file_id</td>
+                                        <td>@item.file_company</td>
+                                        <td>@item.file_circular</td>
+                                        <td>@item.file_form</td>
+                                        <td>@item.file_datecreate</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

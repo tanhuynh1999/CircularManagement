@@ -1,86 +1,47 @@
-﻿
+﻿@using Model.EF
 @{
+    DATAOCREntities db = new DATAOCREntities();
     ViewBag.Title = "Quản lý báo cáo";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<FileMain> fileMains = db.FileMains.OrderByDescending(n => n.file_datecreate).ToList();
 }
 <link href="~/Content/element.css" rel="stylesheet" />
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">
-        <div class="min-height-200px">
-            <script src="//unpkg.com/vue/dist/vue.js"></script>
-            <script src="//unpkg.com/element-ui@2.15.1/lib/index.js"></script>
-            <div id="app">
-                <template>
-                    <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                              style="width: 100%">
-                        <el-table-column label="Mã báo cáo"
-                                         prop="id">
-                        </el-table-column>
-                        <el-table-column label="Tên công ty"
-                                         prop="company">
-                        </el-table-column>
-                        <el-table-column label="Thông tư"
-                                         prop="cir">
-                        </el-table-column>
-                        <el-table-column label="Hình thức"
-                                         prop="form">
-                        </el-table-column>
-                        <el-table-column label="Ngày bắt đầu"
-                                         prop="starsday">
-                        </el-table-column>
-                        <el-table-column label="Ngày kết thúc"
-                                         prop="endday">
-                        </el-table-column>
-                        <el-table-column align="right">
-                            <template slot="header" slot-scope="scope">
-                                <el-input v-model="search"
-                                          size="mini"
-                                          placeholder="Type to search" />
-                            </template>
-                            <template slot-scope="scope">
-                                <el-button size="mini"
-                                           v-on:click="handleEdit(scope.$index, scope.row,scope.row.id)">Sửa</el-button>
-                                <el-button size="mini"
-                                           type="danger"
-                                           v-on:click="handleDelete(scope.$index, scope.row)">Xóa</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </template>
-            </div>
+        <div class="min-height-200px bg-white">
+            <table class="table table-bordered table-hover table-striped">
+                <tr class="bg-danger text-white">
+                    <td>Mã báo cáo</td>
+                    <td>Tên công ty</td>
+                    <td>Thông tư</td>
+                    <td>Hình thức</td>
+                    <td>Ngày bắt đầu</td>
+                    <td>Ngày kết thúc</td>
+                    <td>Ngày tạo</td>
+                    <td>Tùy chọn</td>
+                </tr>
+                @foreach (var item in fileMains)
+                {
+                    <tr>
+                        <td>@item.file_id</td>
+                        <td>@item.file_company</td>
+                        <td>@item.file_circular</td>
+                        <td>@item.file_form</td>
+                        <td>@item.file_startday</td>
+                        <td>@item.file_endday</td>
+                        <td>@item.file_datecreate</td>
+                        <td>
+                            <a href="/Read/Details?id=@item.file_key"><i class="fa fa-eye">&nbsp;</i></a>
+                        </td>
+                    </tr>
+                }
+            </table>
 
         </div>
     </div>
 </div>
-<script>
-    var Main = {
-        data() {
-            return {
-                tableData: [],
-                search: '',
-            }
-        },
-        methods: {
-            handleEdit(index, row, id) {
-                window.location.href = '/Read/Details?id='+id;
-            },
-            handleDelete(index, row) {
-                console.log(index, row);
-            }
-        },
-        mounted: function () {
-            axios.get('/Read/jsonFile')
-                .then(response => {
-                    this.tableData = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        }
-    }
-    var Ctor = Vue.extend(Main)
-    new Ctor().$mount('#app')
-</script>
+
 
 

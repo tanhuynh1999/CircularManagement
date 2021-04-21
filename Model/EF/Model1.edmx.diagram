@@ -11,6 +11,10 @@
         <EntityTypeShape EntityType="DATAOCRModel.TableMain" Width="1.5" PointX="0.75" PointY="8" />
         <AssociationConnector Association="DATAOCRModel.FK_ItemMain_FileMain" />
         <AssociationConnector Association="DATAOCRModel.FK_ItemMain_TableMain" />
+        <EntityTypeShape EntityType="DATAOCRModel.History" Width="1.5" PointX="3" PointY="7.875" />
+        <AssociationConnector Association="DATAOCRModel.FK_Historys_FileMain" />
+        <EntityTypeShape EntityType="DATAOCRModel.FileMain2" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="DATAOCRModel.FileMains3" Width="1.5" PointX="7.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -20,6 +20,63 @@
           <Property Name="file_img" Type="nvarchar(max)" />
           <Property Name="file_company" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="FileMain2">
+          <Key>
+            <PropertyRef Name="file_id" />
+          </Key>
+          <Property Name="file_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="file_circular" Type="int" />
+          <Property Name="file_form" Type="int" />
+          <Property Name="file_startday" Type="datetime" />
+          <Property Name="file_endday" Type="datetime" />
+          <Property Name="file_datecreate" Type="datetime" />
+          <Property Name="file_status" Type="int" />
+          <Property Name="file_key" Type="nvarchar(max)" />
+          <Property Name="file_img" Type="nvarchar(max)" />
+          <Property Name="file_company" Type="nvarchar(max)" />
+          <Property Name="id" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'DATAOCR.dbo.FileMain3' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="FileMain3">
+          <Property Name="file_id" Type="nchar" MaxLength="10" />
+          <Property Name="file_circular" Type="nchar" MaxLength="10" />
+          <Property Name="file_form" Type="nchar" MaxLength="10" />
+          <Property Name="file_startday" Type="nchar" MaxLength="10" />
+          <Property Name="file_endday" Type="nchar" MaxLength="10" />
+          <Property Name="file_datecreate" Type="nchar" MaxLength="10" />
+          <Property Name="file_status" Type="nchar" MaxLength="10" />
+          <Property Name="file_key" Type="nchar" MaxLength="10" />
+          <Property Name="file_img" Type="nchar" MaxLength="10" />
+          <Property Name="file_company" Type="nchar" MaxLength="10" />
+          <Property Name="id" Type="int" />
+        </EntityType>-->
+        <EntityType Name="FileMains3">
+          <Key>
+            <PropertyRef Name="file_id" />
+          </Key>
+          <Property Name="file_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="file_circular" Type="int" />
+          <Property Name="file_form" Type="int" />
+          <Property Name="file_startday" Type="datetime" />
+          <Property Name="file_endday" Type="datetime" />
+          <Property Name="file_datecreate" Type="datetime" />
+          <Property Name="file_status" Type="int" />
+          <Property Name="file_key" Type="nvarchar(max)" />
+          <Property Name="file_img" Type="nvarchar(max)" />
+          <Property Name="file_company" Type="nvarchar(max)" />
+          <Property Name="id" Type="int" />
+        </EntityType>
+        <EntityType Name="Historys">
+          <Key>
+            <PropertyRef Name="his_id" />
+          </Key>
+          <Property Name="his_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="file_id" Type="int" />
+          <Property Name="his_title" Type="nvarchar(max)" />
+          <Property Name="his_datecreate" Type="datetime" />
+          <Property Name="his_status" Type="int" />
+        </EntityType>
         <EntityType Name="ItemMain">
           <Key>
             <PropertyRef Name="item_id" />
@@ -45,6 +102,7 @@
           <Property Name="item_y1" Type="int" />
           <Property Name="item_target" Type="nvarchar(max)" />
           <Property Name="item_codeitem" Type="varchar(max)" />
+          <Property Name="file_key" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -63,6 +121,18 @@
           <Property Name="table_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="table_name" Type="nvarchar(max)" />
         </EntityType>
+        <Association Name="FK_Historys_FileMain">
+          <End Role="FileMain" Type="Self.FileMain" Multiplicity="0..1" />
+          <End Role="Historys" Type="Self.Historys" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileMain">
+              <PropertyRef Name="file_id" />
+            </Principal>
+            <Dependent Role="Historys">
+              <PropertyRef Name="file_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ItemMain_FileMain">
           <End Role="FileMain" Type="Self.FileMain" Multiplicity="0..1" />
           <End Role="ItemMain" Type="Self.ItemMain" Multiplicity="*" />
@@ -89,9 +159,16 @@
         </Association>
         <EntityContainer Name="DATAOCRModelStoreContainer">
           <EntitySet Name="FileMain" EntityType="Self.FileMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileMain2" EntityType="Self.FileMain2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileMains3" EntityType="Self.FileMains3" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Historys" EntityType="Self.Historys" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemMain" EntityType="Self.ItemMain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableMain" EntityType="Self.TableMain" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Historys_FileMain" Association="Self.FK_Historys_FileMain">
+            <End Role="FileMain" EntitySet="FileMain" />
+            <End Role="Historys" EntitySet="Historys" />
+          </AssociationSet>
           <AssociationSet Name="FK_ItemMain_FileMain" Association="Self.FK_ItemMain_FileMain">
             <End Role="FileMain" EntitySet="FileMain" />
             <End Role="ItemMain" EntitySet="ItemMain" />
@@ -118,6 +195,13 @@
             <End Role="TableMain" EntitySet="TableMains" />
             <End Role="ItemMain" EntitySet="ItemMains" />
           </AssociationSet>
+          <EntitySet Name="Historys" EntityType="DATAOCRModel.History" />
+          <AssociationSet Name="FK_Historys_FileMain" Association="DATAOCRModel.FK_Historys_FileMain">
+            <End Role="FileMain" EntitySet="FileMains" />
+            <End Role="History" EntitySet="Historys" />
+          </AssociationSet>
+          <EntitySet Name="FileMain2" EntityType="DATAOCRModel.FileMain2" />
+          <EntitySet Name="FileMains3" EntityType="DATAOCRModel.FileMains3" />
         </EntityContainer>
         <EntityType Name="FileMain">
           <Key>
@@ -134,6 +218,7 @@
           <Property Name="file_img" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="file_company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ItemMains" Relationship="DATAOCRModel.FK_ItemMain_FileMain" FromRole="FileMain" ToRole="ItemMain" />
+          <NavigationProperty Name="Historys" Relationship="DATAOCRModel.FK_Historys_FileMain" FromRole="FileMain" ToRole="History" />
         </EntityType>
         <EntityType Name="ItemMain">
           <Key>
@@ -162,6 +247,7 @@
           <Property Name="item_codeitem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FileMain" Relationship="DATAOCRModel.FK_ItemMain_FileMain" FromRole="ItemMain" ToRole="FileMain" />
           <NavigationProperty Name="TableMain" Relationship="DATAOCRModel.FK_ItemMain_TableMain" FromRole="ItemMain" ToRole="TableMain" />
+          <Property Name="file_key" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -205,6 +291,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="his_id" />
+          </Key>
+          <Property Name="his_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="file_id" Type="Int32" />
+          <Property Name="his_title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="his_datecreate" Type="DateTime" Precision="3" />
+          <Property Name="his_status" Type="Int32" />
+          <NavigationProperty Name="FileMain" Relationship="DATAOCRModel.FK_Historys_FileMain" FromRole="History" ToRole="FileMain" />
+        </EntityType>
+        <Association Name="FK_Historys_FileMain">
+          <End Type="DATAOCRModel.FileMain" Role="FileMain" Multiplicity="0..1" />
+          <End Type="DATAOCRModel.History" Role="History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileMain">
+              <PropertyRef Name="file_id" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="file_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FileMain2">
+          <Key>
+            <PropertyRef Name="file_id" />
+          </Key>
+          <Property Name="file_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="file_circular" Type="Int32" />
+          <Property Name="file_form" Type="Int32" />
+          <Property Name="file_startday" Type="DateTime" Precision="3" />
+          <Property Name="file_endday" Type="DateTime" Precision="3" />
+          <Property Name="file_datecreate" Type="DateTime" Precision="3" />
+          <Property Name="file_status" Type="Int32" />
+          <Property Name="file_key" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="file_img" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="file_company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FileMains3">
+          <Key>
+            <PropertyRef Name="file_id" />
+          </Key>
+          <Property Name="file_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="file_circular" Type="Int32" />
+          <Property Name="file_form" Type="Int32" />
+          <Property Name="file_startday" Type="DateTime" Precision="3" />
+          <Property Name="file_endday" Type="DateTime" Precision="3" />
+          <Property Name="file_datecreate" Type="DateTime" Precision="3" />
+          <Property Name="file_status" Type="Int32" />
+          <Property Name="file_key" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="file_img" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="file_company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -230,6 +371,7 @@
           <EntitySetMapping Name="ItemMains">
             <EntityTypeMapping TypeName="DATAOCRModel.ItemMain">
               <MappingFragment StoreEntitySet="ItemMain">
+                <ScalarProperty Name="file_key" ColumnName="file_key" />
                 <ScalarProperty Name="item_codeitem" ColumnName="item_codeitem" />
                 <ScalarProperty Name="item_target" ColumnName="item_target" />
                 <ScalarProperty Name="item_y1" ColumnName="item_y1" />
@@ -270,6 +412,51 @@
               <MappingFragment StoreEntitySet="TableMain">
                 <ScalarProperty Name="table_name" ColumnName="table_name" />
                 <ScalarProperty Name="table_id" ColumnName="table_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Historys">
+            <EntityTypeMapping TypeName="DATAOCRModel.History">
+              <MappingFragment StoreEntitySet="Historys">
+                <ScalarProperty Name="his_status" ColumnName="his_status" />
+                <ScalarProperty Name="his_datecreate" ColumnName="his_datecreate" />
+                <ScalarProperty Name="his_title" ColumnName="his_title" />
+                <ScalarProperty Name="file_id" ColumnName="file_id" />
+                <ScalarProperty Name="his_id" ColumnName="his_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileMain2">
+            <EntityTypeMapping TypeName="DATAOCRModel.FileMain2">
+              <MappingFragment StoreEntitySet="FileMain2">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="file_company" ColumnName="file_company" />
+                <ScalarProperty Name="file_img" ColumnName="file_img" />
+                <ScalarProperty Name="file_key" ColumnName="file_key" />
+                <ScalarProperty Name="file_status" ColumnName="file_status" />
+                <ScalarProperty Name="file_datecreate" ColumnName="file_datecreate" />
+                <ScalarProperty Name="file_endday" ColumnName="file_endday" />
+                <ScalarProperty Name="file_startday" ColumnName="file_startday" />
+                <ScalarProperty Name="file_form" ColumnName="file_form" />
+                <ScalarProperty Name="file_circular" ColumnName="file_circular" />
+                <ScalarProperty Name="file_id" ColumnName="file_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileMains3">
+            <EntityTypeMapping TypeName="DATAOCRModel.FileMains3">
+              <MappingFragment StoreEntitySet="FileMains3">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="file_company" ColumnName="file_company" />
+                <ScalarProperty Name="file_img" ColumnName="file_img" />
+                <ScalarProperty Name="file_key" ColumnName="file_key" />
+                <ScalarProperty Name="file_status" ColumnName="file_status" />
+                <ScalarProperty Name="file_datecreate" ColumnName="file_datecreate" />
+                <ScalarProperty Name="file_endday" ColumnName="file_endday" />
+                <ScalarProperty Name="file_startday" ColumnName="file_startday" />
+                <ScalarProperty Name="file_form" ColumnName="file_form" />
+                <ScalarProperty Name="file_circular" ColumnName="file_circular" />
+                <ScalarProperty Name="file_id" ColumnName="file_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
