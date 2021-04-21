@@ -80,10 +80,10 @@
                                                 @*<el-table-column prop="img"
                                                      label="Ảnh"
                                                      width="100">
-                                                <template slot-scope="scope">
-                                                    <el-image :src="scope.row.img" :preview-src-list="[scope.row.img]" style="width: 100%; height: 20px">
-                                                </template>
-                                            </el-table-column>*@
+                                                    <template slot-scope="scope">
+                                                        <el-image :src="scope.row.img" :preview-src-list="[scope.row.img]" style="width: 100%; height: 20px">
+                                                    </template>
+                                                </el-table-column>*@
                                             </el-table>
                                         </template>
                                         <br />
@@ -126,8 +126,3 @@
 
 <script src="~/Scripts/arrCT.js"></script>
 <script src="~/Scripts/details.js"></script>
-<script>
-    function show() {
-        alert("a");
-    }
-</script>

@@ -1265,6 +1265,7 @@
     <Content Include="Views\Read\Loading.cshtml" />
     <Content Include="Views\Read\File.cshtml" />
     <Content Include="Views\Read\Detail.cshtml" />
+    <Content Include="Views\Read\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

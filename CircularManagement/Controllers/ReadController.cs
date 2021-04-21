@@ -192,5 +192,9 @@ namespace CircularManagement.Controllers
             Session["key"] = null;
             return View(db.FileMains.Find(id));
         }
+        public ActionResult History()
+        {
+            return View();
+        }
     }
 }
